@@ -3,7 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace SailingBackend
 {
@@ -13,7 +16,7 @@ namespace SailingBackend
 
         public static DatabaseConfig GetDatabaseConfig()
         {
-            DatabaseConfig databaseConfig = new DatabaseConfig() 
+            DatabaseConfig databaseConfig = new DatabaseConfig()
             {
                 Username = "root",
                 Password = "root",
@@ -24,13 +27,15 @@ namespace SailingBackend
 
             if (!File.Exists(@"config.json"))
             {
-                File.CreateText(@"config.json");
-                using FileStream createStream = File.Create(@"config.json");
-                string json = JsonConvert.SerializeObject(databaseConfig);
+                string json = System.Text.Json.JsonSerializer.Serialize(databaseConfig);
+                using (StreamWriter outFile = new StreamWriter(@"config.json"))
+                {
+                    outFile.Write(json);
+                }
             }
             using (StreamReader file = File.OpenText(@"config.json"))
             {
-                JsonSerializer serializer = new JsonSerializer();
+                Newtonsoft.Json.JsonSerializer serializer = new Newtonsoft.Json.JsonSerializer();
                 databaseConfig = (DatabaseConfig)serializer.Deserialize(file, typeof(DatabaseConfig));
             }
             return databaseConfig;
