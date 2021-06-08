@@ -15,7 +15,7 @@ namespace SailingBackend.DatabaseClasses
         public double EntranceFee { get; set; }
         public string City { get; set; }
         public string Address { get; set; }
-        public double Lat { get; set; }
-        public double Lng { get; set; }
+        public float Lat { get; set; }
+        public float Lng { get; set; }
     }
 }
