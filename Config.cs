@@ -5,8 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace SailingBackend
 {
@@ -27,7 +25,7 @@ namespace SailingBackend
 
             if (!File.Exists(@"config.json"))
             {
-                string json = System.Text.Json.JsonSerializer.Serialize(databaseConfig);
+                string json = JsonConvert.SerializeObject(databaseConfig, Formatting.Indented);
                 using (StreamWriter outFile = new StreamWriter(@"config.json"))
                 {
                     outFile.Write(json);
