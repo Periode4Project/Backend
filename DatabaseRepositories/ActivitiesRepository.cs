@@ -6,9 +6,9 @@ using Dapper;
 
 namespace SailingBackend.DatabaseRepositories
 {
-    public class ActivitiesRepository
+    public static class ActivitiesRepository
     {
-		public IEnumerable<ApplicationClasses.Activity> GetAllActivities()
+		public static IEnumerable<ApplicationClasses.Activity> GetAllActivities()
 		{
 			using var connection = DatabaseConnectionRepository.Connect();
 			try
@@ -33,7 +33,8 @@ namespace SailingBackend.DatabaseRepositories
 								lat = activity.Lat,
 								lng = activity.Lng
                             }
-                        }
+                        },
+						EntranceFee = activity.EntranceFee
 					});
                 }
 				return activities;
