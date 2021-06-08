@@ -12,7 +12,7 @@ namespace SailingBackend.Controllers
     public class ActivitiesController : ControllerBase
     {
         [HttpGet("GetAll")]
-        public IActionResult getAllActivities()
+        public ActionResult<List<ApplicationClasses.Activity>> getAllActivities()
         {
             return Ok(DatabaseRepositories.ActivitiesRepository.GetAllActivities());
         }
