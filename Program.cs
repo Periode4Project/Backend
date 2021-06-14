@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SailingBackend.DatabaseMigrations;
 
 namespace SailingBackend
 {
@@ -13,6 +14,8 @@ namespace SailingBackend
     {
         public static void Main(string[] args)
         {
+            if (args.Contains("--migrate"))
+                DatabaseMigrationsController.LoadMigrations();
             CreateHostBuilder(args).Build().Run();
         }
 

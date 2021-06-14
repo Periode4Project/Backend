@@ -33,7 +33,7 @@ namespace SailingBackend
             }
             using (StreamReader file = File.OpenText(@"config.json"))
             {
-                Newtonsoft.Json.JsonSerializer serializer = new Newtonsoft.Json.JsonSerializer();
+                JsonSerializer serializer = new JsonSerializer();
                 databaseConfig = (DatabaseConfig)serializer.Deserialize(file, typeof(DatabaseConfig));
             }
             return databaseConfig;
