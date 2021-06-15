@@ -18,6 +18,7 @@ namespace SailingBackend.DatabaseMigrations
             DatabaseMigrations.Add(CreateUsersMigration.DatabaseMigration);
             DatabaseMigrations.Add(CreateReviewsMigration.DatabaseMigration);
             DatabaseMigrations.Add(CreateSuggestionsMigration.DatabaseMigration);
+            DatabaseMigrations.Add(AddAdminFlagToUsersMigration.DatabaseMigration);
         }
         public static void LoadMigrations()
         {
