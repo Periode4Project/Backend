@@ -8,26 +8,35 @@ namespace SailingBackend.DatabaseRepositories
 {
     public static class LoginRepository
     {
-        public static bool IsValidLogin(string email, string password)
+        public static ApplicationClasses.LoggedInUser GetLoginInformation(string email, string password)
         {
-            bool IsValidLogin = false;
+            ApplicationClasses.LoggedInUser loggedInUser = new ApplicationClasses.LoggedInUser { };
             using var connection = DatabaseConnectionRepository.Connect();
             try 
             {
-                IsValidLogin = connection.ExecuteScalar<bool>
-                    (
-                        sql: "SELECT COUNT(1) FROM Users WHERE Email=@EMAIL AND Password=@PASSWORD", 
-                        param: new 
-                        {
-                            @EMAIL = email,
-                            @PASSWORD = password
-                        });
+                if (connection.ExecuteScalar<bool>(
+                    sql: "SELECT COUNT(1) FROM Users WHERE Email=@EMAIL AND Password=@PASSWORD", 
+                    param: new 
+                    {
+                        @EMAIL = email,
+                        @PASSWORD = password
+                    })
+                )
+                {
+                    loggedInUser = connection.QueryFirst<ApplicationClasses.LoggedInUser>(
+                    sql: "SELECT * FROM Users WHERE Email=@EMAIL AND Password=@PASSWORD",
+                    param: new
+                    {
+                        @EMAIL = email,
+                        @PASSWORD = password
+                    });
+                }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
-            return IsValidLogin;
+            return loggedInUser;
         }
 
         public static bool IsValidRegistration(string email, string fullname, string password)

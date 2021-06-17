@@ -12,10 +12,11 @@ namespace SailingBackend.Controllers
     public class AuthController : ControllerBase
     {
         [HttpPost("Login/")]
-        public ActionResult Login([FromBody] ApplicationClasses.LoginUserCredentials loginUserCredentials)
+        public ActionResult<ApplicationClasses.LoggedInUser> Login([FromBody] ApplicationClasses.LoginUserCredentials loginUserCredentials)
         {
-            if (DatabaseRepositories.LoginRepository.IsValidLogin(loginUserCredentials.Email, loginUserCredentials.Password))
-                return Ok();
+            ApplicationClasses.LoggedInUser loggedInUser = DatabaseRepositories.LoginRepository.GetLoginInformation(loginUserCredentials.Email, loginUserCredentials.Password);
+            if (loggedInUser.Email != null && loggedInUser.Fullname != null)
+                return Ok(loggedInUser);
             return Unauthorized();
         }
         [HttpPost("Register/")]
