@@ -13,7 +13,7 @@ namespace SailingBackend.ApplicationClasses
         public string ActivityDesc { get; set; }
         public string ActivityType { get; set; }
         public Place ActivityPlace { get; set; }
-        public float EntranceFee { get; set; }
+        public double EntranceFee { get; set; }
     }
     public class Place
     {
@@ -24,7 +24,7 @@ namespace SailingBackend.ApplicationClasses
 
     public class Location
     {
-        public float lat { get; set; }
-        public float lng { get; set; }
+        public double lat { get; set; }
+        public double lng { get; set; }
     }
 }

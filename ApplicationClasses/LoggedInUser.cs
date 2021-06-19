@@ -9,6 +9,6 @@ namespace SailingBackend.ApplicationClasses
     {
         public string Email { get; set; }
         public string Fullname { get; set; }
-        public bool? IsAdmin { get; set; }
+        public bool IsAdmin { get; set; }
     }
 }

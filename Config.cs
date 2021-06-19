@@ -10,17 +10,18 @@ namespace SailingBackend
 {
     public static class Config
     {
-        public static readonly DatabaseConfig config = GetDatabaseConfig();
+        public static readonly ConfigFile config = GetDatabaseConfig();
 
-        public static DatabaseConfig GetDatabaseConfig()
+        public static ConfigFile GetDatabaseConfig()
         {
-            DatabaseConfig databaseConfig = new DatabaseConfig()
+            ConfigFile databaseConfig = new ConfigFile()
             {
                 Username = "root",
                 Password = "root",
                 Database = "sailing",
                 Host = "127.0.0.1",
-                Port = 3306
+                Port = 3306,
+                MapQuestToken = "https://developer.mapquest.com/user/me/apps"
             };
 
             if (!File.Exists(@"config.json"))
@@ -34,7 +35,7 @@ namespace SailingBackend
             using (StreamReader file = File.OpenText(@"config.json"))
             {
                 JsonSerializer serializer = new JsonSerializer();
-                databaseConfig = (DatabaseConfig)serializer.Deserialize(file, typeof(DatabaseConfig));
+                databaseConfig = (ConfigFile)serializer.Deserialize(file, typeof(ConfigFile));
             }
             return databaseConfig;
         }
