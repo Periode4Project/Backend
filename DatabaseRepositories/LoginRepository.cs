@@ -8,6 +8,25 @@ namespace SailingBackend.DatabaseRepositories
 {
     public static class LoginRepository
     {
+        public static int GetUserId(string email)
+        {
+            int userId = -1;
+            using var connection = DatabaseConnectionRepository.Connect();
+            try
+            {
+                userId = connection.ExecuteScalar<int>(
+                sql: "SELECT COUNT(1) FROM Users WHERE Email=@EMAIL AND Password=@PASSWORD",
+                param: new
+                {
+                    @EMAIL = email
+                });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return userId;
+        }
         public static ApplicationClasses.LoggedInUser GetLoginInformation(string email, string password)
         {
             ApplicationClasses.LoggedInUser loggedInUser = new ApplicationClasses.LoggedInUser { };
