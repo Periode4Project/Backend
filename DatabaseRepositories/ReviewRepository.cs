@@ -8,7 +8,27 @@ namespace SailingBackend.DatabaseRepositories
 {
     public static class ReviewRepository
     {
-        public static bool IsAddReviewSuccessful(ApplicationClasses.SubmittedReview submittedReview)
+		public static List<ApplicationClasses.Review> GetReviewsForActivity(int Activity)
+		{
+			List<ApplicationClasses.Review> reviews = new List<ApplicationClasses.Review> { };
+			using var connection = DatabaseConnectionRepository.Connect();
+			try
+			{
+				reviews = (List<ApplicationClasses.Review>)connection.Query<ApplicationClasses.Activity>
+				(
+					sql: "SELECT * FROM Reviews WHERE Activity=@Activity",
+					param: new
+					{
+						@Activity = Activity
+					});
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+			}
+			return reviews;
+		}
+		public static bool IsAddReviewSuccessful(ApplicationClasses.SubmittedReview submittedReview)
         {
             if (LoginRepository.GetLoginInformation(submittedReview.LoginUserCredentials.Email, submittedReview.LoginUserCredentials.Password).Email != null)
             {
