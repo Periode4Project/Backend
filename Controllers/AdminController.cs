@@ -72,5 +72,23 @@ namespace SailingBackend.Controllers
             }
             return StatusCode(500);
         }
+
+        [HttpDelete("DeleteActivity")]
+        public ActionResult DeleteActivity([FromBody] ApplicationClasses.LoginUserCredentials login, int activity)
+        {
+            if (!DatabaseRepositories.LoginRepository.GetLoginInformation(login.Email, login.Password).IsAdmin)
+                return StatusCode(403);
+            try
+            {
+                if (DatabaseRepositories.AdminRepository.IsDeleteActivitySuccessful(activity))
+                    return Ok();
+                return StatusCode(500);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return StatusCode(500);
+        }
     }
 }
