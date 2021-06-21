@@ -14,13 +14,18 @@ namespace SailingBackend.DatabaseRepositories
 			using var connection = DatabaseConnectionRepository.Connect();
 			try
 			{
-				reviews = (List<ApplicationClasses.Review>)connection.Query<ApplicationClasses.Activity>
+				reviews = (List<ApplicationClasses.Review>)connection.Query<ApplicationClasses.Review>
 				(
 					sql: "SELECT * FROM Reviews WHERE Activity=@Activity",
 					param: new
 					{
 						@Activity = Activity
-					});
+					}
+				);
+				foreach (ApplicationClasses.Review review in reviews)
+                {
+					review.ReviewWriterName = LoginRepository.GetUserFullName(review.ReviewWriter);
+                }
 			}
 			catch (Exception e)
 			{
@@ -38,12 +43,12 @@ namespace SailingBackend.DatabaseRepositories
 				if (submittedReview.Review.Rating < 1 || submittedReview.Review.Rating > 10)
 					return false;
 				bool isSuccess = false;
-				using var connection = DatabaseConnectionRepository.Connect();
-				try
-				{
-					int rowsEffected = connection.Execute(
+                using var connection = DatabaseConnectionRepository.Connect();
+                try
+                {
+                    int rowsEffected = connection.Execute(
 						sql:
-						@"INSERT INTO Activities 
+						@"INSERT INTO Reviews
 						(
 							ReviewTitle,
 							Rating,
@@ -62,7 +67,7 @@ namespace SailingBackend.DatabaseRepositories
 
 						param: new
 						{
-							@ReviewTitle = submittedReview.Review.ReviewTitle,
+                            @ReviewTitle = submittedReview.Review.ReviewTitle,
 							@Rating = submittedReview.Review.Rating,
 							@ReviewDESC = submittedReview.Review.ReviewDESC,
 							@ReviewWriter = userid,
@@ -71,13 +76,13 @@ namespace SailingBackend.DatabaseRepositories
 					if (rowsEffected == 1)
 						isSuccess = true;
 					return isSuccess;
-				}
-				catch (Exception e)
-				{
-					Console.WriteLine(e);
-					return false;
-				}
-			}
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return false;
+                }
+            }
             return false;
         }
     }

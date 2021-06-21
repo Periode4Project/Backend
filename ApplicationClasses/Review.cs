@@ -12,6 +12,7 @@ namespace SailingBackend.ApplicationClasses
         public double Rating { get; set; }
         public string ReviewDESC { get; set; }
         public int ReviewWriter { get; set; }
+        public string ReviewWriterName { get; set; }
         public int Activity { get; set; }
     }
 }
