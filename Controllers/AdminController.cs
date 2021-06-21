@@ -55,5 +55,22 @@ namespace SailingBackend.Controllers
                 return StatusCode(500);
             }
         }
+        [HttpDelete("DeleteReview")]
+        public ActionResult DeleteReview([FromBody] ApplicationClasses.LoginUserCredentials login, int review)
+        {
+            if (!DatabaseRepositories.LoginRepository.GetLoginInformation(login.Email, login.Password).IsAdmin)
+                return StatusCode(403);
+            try
+            {
+                if (DatabaseRepositories.AdminRepository.IsDeleteReviewSuccessful(review))
+                    return Ok();
+                return StatusCode(500);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return StatusCode(500);
+        }
     }
 }
