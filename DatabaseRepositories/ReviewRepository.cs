@@ -85,5 +85,27 @@ namespace SailingBackend.DatabaseRepositories
             }
             return false;
         }
-    }
+
+		public static List<ApplicationClasses.Review> GetAllReviews()
+		{
+			List<ApplicationClasses.Review> reviews = new List<ApplicationClasses.Review> { };
+			using var connection = DatabaseConnectionRepository.Connect();
+			try
+			{
+				reviews = (List<ApplicationClasses.Review>)connection.Query<ApplicationClasses.Review>
+				(
+					sql: "SELECT * FROM Reviews"
+				);
+				foreach (ApplicationClasses.Review review in reviews)
+				{
+					review.ReviewWriterName = LoginRepository.GetUserFullName(review.ReviewWriter);
+				}
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+			}
+			return reviews;
+		}
+	}
 }

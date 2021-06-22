@@ -17,6 +17,12 @@ namespace SailingBackend.Controllers
             return DatabaseRepositories.ReviewRepository.GetReviewsForActivity(activity);
         }
 
+        [HttpGet("GetAllReviews")]
+        public ActionResult<List<ApplicationClasses.Review>> GetAllReviews()
+        {
+            return DatabaseRepositories.ReviewRepository.GetAllReviews();
+        }
+
         [HttpPost("AddReview")]
         public ActionResult AddReview([FromBody] ApplicationClasses.SubmittedReview submittedReview)
         {
