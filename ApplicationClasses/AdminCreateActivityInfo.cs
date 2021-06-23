@@ -7,7 +7,7 @@ namespace SailingBackend.ApplicationClasses
 {
     public class AdminCreateActivityInfo
     {
-        public SubmittedLocation SubmittedLocation { get; set; }
+        public Activity SubmittedLocation { get; set; }
         public LoginUserCredentials LoginUserCredentials { get; set; }
     }
 }

@@ -23,25 +23,25 @@ namespace SailingBackend.Controllers
                 return StatusCode(403);
             try
             {
-                string encodedUrl = "http://open.mapquestapi.com/geocoding/v1/address?key=" + Config.config.MapQuestToken + "&location=" + HttpUtility.UrlEncode(activityInfo.SubmittedLocation.Address);
-                Console.WriteLine(encodedUrl);
-                HttpClient client = new HttpClient();
-                client.DefaultRequestHeaders.Add("Accept", "application/json");
-                HttpResponseMessage response = client.GetAsync(encodedUrl).Result;
-                response.EnsureSuccessStatusCode();
-                ApplicationClasses.MapQuestResponse locationData = JsonConvert.DeserializeObject<ApplicationClasses.MapQuestResponse>(response.Content.ReadAsStringAsync().Result);
+                //string encodedUrl = "http://open.mapquestapi.com/geocoding/v1/address?key=" + Config.config.MapQuestToken + "&location=" + HttpUtility.UrlEncode(activityInfo.SubmittedLocation.ActivityPlace.Address);
+                //Console.WriteLine(encodedUrl);
+                //HttpClient client = new HttpClient();
+                //client.DefaultRequestHeaders.Add("Accept", "application/json");
+                //HttpResponseMessage response = client.GetAsync(encodedUrl).Result;
+                //response.EnsureSuccessStatusCode();
+                //ApplicationClasses.MapQuestResponse locationData = JsonConvert.DeserializeObject<ApplicationClasses.MapQuestResponse>(response.Content.ReadAsStringAsync().Result);
 
                 DatabaseClasses.Activity activity = new DatabaseClasses.Activity
                 {
                     ActivityDesc = activityInfo.SubmittedLocation.ActivityDesc,
-                    ActivityImage = activityInfo.SubmittedLocation.ActivityImg,
+                    ActivityImage = activityInfo.SubmittedLocation.ActivityImage,
                     ActivityName = activityInfo.SubmittedLocation.ActivityName,
                     ActivityType = activityInfo.SubmittedLocation.ActivityType,
-                    Address = activityInfo.SubmittedLocation.Address,
-                    City = activityInfo.SubmittedLocation.City,
-                    EntranceFee = activityInfo.SubmittedLocation.Entrancefee,
-                    Lat = locationData.results[0].locations[0].latLng.lat,
-                    Lng = locationData.results[0].locations[0].latLng.lng
+                    Address = activityInfo.SubmittedLocation.ActivityPlace.Address,
+                    City = activityInfo.SubmittedLocation.ActivityPlace.City,
+                    EntranceFee = activityInfo.SubmittedLocation.EntranceFee,
+                    Lat = activityInfo.SubmittedLocation.ActivityPlace.Location.lat,
+                    Lng = activityInfo.SubmittedLocation.ActivityPlace.Location.lng
                 };
 
                 if (!DatabaseRepositories.AdminRepository.IsAddActivitySuccessful(activity))
