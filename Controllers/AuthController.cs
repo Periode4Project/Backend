@@ -27,9 +27,9 @@ namespace SailingBackend.Controllers
             return Unauthorized();
         }
         [HttpGet("IsUserAdmin")]
-        public ActionResult isuserAdmin([FromBody] ApplicationClasses.EmailClass emailClass)
+        public ActionResult isuserAdmin(string email)
         {
-            if (DatabaseRepositories.LoginRepository.UserIsAdmin(emailClass.Email))
+            if (DatabaseRepositories.LoginRepository.UserIsAdmin(email))
                 return Ok();
             return NotFound();
         }
