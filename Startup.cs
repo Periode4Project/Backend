@@ -18,7 +18,6 @@ namespace SailingBackend
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            string DatabaseName = Config.config.Database;
         }
 
         public IConfiguration Configuration { get; }
