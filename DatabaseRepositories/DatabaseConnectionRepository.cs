@@ -9,7 +9,7 @@ namespace SailingBackend.DatabaseRepositories
 {
     public static class DatabaseConnectionRepository
     {
-        static ConfigFile databaseConfig = Config.config;
+        static ConfigFile databaseConfig = Config.Database;
         public static IDbConnection Connect()
         {
             string connectionstring = $@"Server={databaseConfig.Host};
