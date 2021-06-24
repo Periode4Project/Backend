@@ -3,11 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
+using SailingBackend.ApplicationClasses;
 
 namespace SailingBackend.DatabaseRepositories
 {
+    /// <summary>
+    /// Contains database logic for authentication
+    /// </summary>
     public static class LoginRepository
     {
+        /// <summary>
+        /// get user's full name
+        /// </summary>
+        /// <param name="id"> int userid </param>
+        /// <returns> string name </returns>
         public static string GetUserFullName(int id)
         {
             using var connection = DatabaseConnectionRepository.Connect();
@@ -28,6 +37,11 @@ namespace SailingBackend.DatabaseRepositories
             return name;
         }
 
+        /// <summary>
+        /// get user's id from email
+        /// </summary>
+        /// <param name="email"> string email </param>
+        /// <returns> int id </returns>
         public static int GetUserId(string email)
         {
             int userId = -1;
@@ -36,10 +50,8 @@ namespace SailingBackend.DatabaseRepositories
             {
                 userId = connection.QueryFirst<int>(
                 sql: "SELECT UserID FROM Users WHERE Email=@EMAIL",
-                param: new
-                {
-                    @EMAIL = email
-                });
+                param: new { @EMAIL = email }
+                );
             }
             catch (Exception e)
             {
@@ -47,9 +59,16 @@ namespace SailingBackend.DatabaseRepositories
             }
             return userId;
         }
-        public static ApplicationClasses.LoggedInUser GetLoginInformation(string email, string password)
+
+        /// <summary>
+        /// Get user login details
+        /// </summary>
+        /// <param name="email"> string email </param>
+        /// <param name="password"> string password </param>
+        /// <returns> Object of type LoggedInUser </returns>
+        public static LoggedInUser GetLoginInformation(string email, string password)
         {
-            ApplicationClasses.LoggedInUser loggedInUser = new ApplicationClasses.LoggedInUser { };
+            LoggedInUser loggedInUser = new LoggedInUser { };
             using var connection = DatabaseConnectionRepository.Connect();
             try 
             {
@@ -62,7 +81,7 @@ namespace SailingBackend.DatabaseRepositories
                     })
                 )
                 {
-                    loggedInUser = connection.QueryFirst<ApplicationClasses.LoggedInUser>(
+                    loggedInUser = connection.QueryFirst<LoggedInUser>(
                     sql: "SELECT * FROM Users WHERE Email=@EMAIL AND Password=@PASSWORD",
                     param: new
                     {
@@ -78,6 +97,15 @@ namespace SailingBackend.DatabaseRepositories
             return loggedInUser;
         }
 
+        /// <summary>
+        /// Register 
+        /// </summary>
+        /// <param name="email"> string email </param>
+        /// <param name="fullname"> string fullname </param>
+        /// <param name="password"> string password </param>
+        /// <returns>
+        /// bool that reflects success
+        /// </returns>
         public static bool IsValidRegistration(string email, string fullname, string password)
         {
             bool IsValidRegistration = false;
@@ -88,7 +116,22 @@ namespace SailingBackend.DatabaseRepositories
                 {
                     connection.ExecuteScalar<bool>
                         (
-                            sql: "INSERT INTO Users (Email, FullName, Password, IsAdmin) VALUES (@EMAIL, @FULLNAME, @PASSWORD, False)",
+                            sql: @"
+                            INSERT INTO Users 
+                            (
+                                Email, 
+                                FullName, 
+                                Password, 
+                                IsAdmin
+                            ) 
+                            VALUES 
+                            (
+                                @EMAIL, 
+                                @FULLNAME, 
+                                @PASSWORD, 
+                                False
+                            )
+                            ",
                             param: new
                             {
                                 @EMAIL = email,
@@ -106,6 +149,11 @@ namespace SailingBackend.DatabaseRepositories
             return IsValidRegistration;
         }
 
+        /// <summary>
+        /// Check if email is free
+        /// </summary>
+        /// <param name="email"> string email </param>
+        /// <returns> boolean </returns>
         public static bool IsEmailFree(string email)
         {
             bool IsEmailUsed = false;
@@ -115,10 +163,7 @@ namespace SailingBackend.DatabaseRepositories
                 IsEmailUsed = connection.ExecuteScalar<bool>
                 (
                     sql: "SELECT COUNT(1) FROM Users WHERE Email=@EMAIL",
-                    param: new
-                    {
-                        @EMAIL = email
-                    }
+                    param: new { @EMAIL = email }
                 );
             } 
             catch (Exception e) 
@@ -128,6 +173,11 @@ namespace SailingBackend.DatabaseRepositories
             return !IsEmailUsed;
         }
 
+        /// <summary>
+        /// check if user is admin
+        /// </summary>
+        /// <param name="email"> string email </param>
+        /// <returns> boolean </returns>
         public static bool UserIsAdmin(string email)
         {
             bool IsAdmin = false;
@@ -137,10 +187,7 @@ namespace SailingBackend.DatabaseRepositories
                 IsAdmin = connection.ExecuteScalar<bool>
                 (
                     sql: "SELECT COUNT(1) FROM Users WHERE Email=@EMAIL AND IsAdmin = 1",
-                    param: new
-                    {
-                        @EMAIL = email
-                    }
+                    param: new { @EMAIL = email }
                 );
             }
             catch (Exception e)
