@@ -1,0 +1,7 @@
+﻿{
+  "Username": "root",
+  "Password": "root",
+  "Database": "sailing",
+  "Host": "localhost",
+  "Port": 3306
+}
