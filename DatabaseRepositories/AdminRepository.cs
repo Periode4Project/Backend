@@ -3,12 +3,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SailingBackend.DatabaseClasses;
 
 namespace SailingBackend.DatabaseRepositories
 {
+	/// <summary>
+	/// Contains database logic for Admin actions
+	/// </summary>
     public static class AdminRepository
     {
-        public static bool IsAddActivitySuccessful(DatabaseClasses.Activity activity)
+		/// <summary>
+		/// Add activity to database
+		/// </summary>
+		/// <param name="activity"> Object of type Activity </param>
+		/// <returns> boolean that reflects success status </returns>
+        public static bool IsAddActivitySuccessful(Activity activity)
         {
             bool isSuccess = false;
             using var connection = DatabaseConnectionRepository.Connect();
@@ -66,6 +75,11 @@ namespace SailingBackend.DatabaseRepositories
 			}
 		}
 
+		/// <summary>
+		/// Delete review
+		/// </summary>
+		/// <param name="ReviewId"> Integer for Review ID </param>
+		/// <returns> boolean that reflects success status </returns>
 		public static bool IsDeleteReviewSuccessful(int ReviewId)
         {
 			bool isSuccess = false;
@@ -95,6 +109,11 @@ namespace SailingBackend.DatabaseRepositories
 			}
 		}
 
+		/// <summary>
+		/// Delete Activity
+		/// </summary>
+		/// <param name="activityId"> integer for Activity ID </param>
+		/// <returns> boolean that reflects success status </returns>
 		public static bool IsDeleteActivitySuccessful(int activityId)
 		{
 			bool isSuccess = false;
