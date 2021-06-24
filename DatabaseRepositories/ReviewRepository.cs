@@ -3,18 +3,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SailingBackend.ApplicationClasses;
 
 namespace SailingBackend.DatabaseRepositories
 {
+	/// <summary>
+	/// Contains database logic for reviews
+	/// </summary>
     public static class ReviewRepository
     {
-		public static List<ApplicationClasses.Review> GetReviewsForActivity(int Activity)
+		/// <summary>
+		/// Get all reviews for an activity
+		/// </summary>
+		/// <param name="Activity"> int activity </param>
+		/// <returns> List of type Review </returns>
+		public static List<Review> GetReviewsForActivity(int Activity)
 		{
-			List<ApplicationClasses.Review> reviews = new List<ApplicationClasses.Review> { };
+			List<Review> reviews = new List<Review> { };
 			using var connection = DatabaseConnectionRepository.Connect();
 			try
 			{
-				reviews = (List<ApplicationClasses.Review>)connection.Query<ApplicationClasses.Review>
+				reviews = (List<Review>)connection.Query<Review>
 				(
 					sql: "SELECT * FROM Reviews WHERE Activity=@Activity",
 					param: new
@@ -22,7 +31,7 @@ namespace SailingBackend.DatabaseRepositories
 						@Activity = Activity
 					}
 				);
-				foreach (ApplicationClasses.Review review in reviews)
+				foreach (Review review in reviews)
                 {
 					review.ReviewWriterName = LoginRepository.GetUserFullName(review.ReviewWriter);
                 }
@@ -33,7 +42,13 @@ namespace SailingBackend.DatabaseRepositories
 			}
 			return reviews;
 		}
-		public static bool IsAddReviewSuccessful(ApplicationClasses.SubmittedReview submittedReview)
+
+		/// <summary>
+		/// Add review
+		/// </summary>
+		/// <param name="submittedReview"> Object of type SubmittedReview </param>
+		/// <returns> bool success </returns>
+		public static bool IsAddReviewSuccessful(SubmittedReview submittedReview)
         {
             if (LoginRepository.GetLoginInformation(submittedReview.LoginUserCredentials.Email, submittedReview.LoginUserCredentials.Password).Email != null)
             {
@@ -86,17 +101,21 @@ namespace SailingBackend.DatabaseRepositories
             return false;
         }
 
-		public static List<ApplicationClasses.Review> GetAllReviews()
+		/// <summary>
+		/// Get all reviews
+		/// </summary>
+		/// <returns> List of type Review </returns>
+		public static List<Review> GetAllReviews()
 		{
-			List<ApplicationClasses.Review> reviews = new List<ApplicationClasses.Review> { };
+			List<Review> reviews = new List<Review> { };
 			using var connection = DatabaseConnectionRepository.Connect();
 			try
 			{
-				reviews = (List<ApplicationClasses.Review>)connection.Query<ApplicationClasses.Review>
+				reviews = (List<Review>)connection.Query<Review>
 				(
 					sql: "SELECT * FROM Reviews"
 				);
-				foreach (ApplicationClasses.Review review in reviews)
+				foreach (Review review in reviews)
 				{
 					review.ReviewWriterName = LoginRepository.GetUserFullName(review.ReviewWriter);
 				}

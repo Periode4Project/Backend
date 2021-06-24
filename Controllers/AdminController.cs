@@ -9,27 +9,33 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Net.Http;
 using Newtonsoft.Json;
+using SailingBackend.ApplicationClasses;
+using SailingBackend.DatabaseClasses;
 
 namespace SailingBackend.Controllers
 {
+    /// <summary>
+    /// Define API controller route and class
+    /// </summary>
     [Route("/Admin")]
     [ApiController]
     public class AdminController : ControllerBase
     {
+        /// <summary>
+        /// Add an activity as admin user
+        /// </summary>
+        /// <param name="activityInfo"> Object of type AdminCreateActivityInfo, contains activity details and userinfo </param>
+        /// <returns> ActionResult/HTTP status code </returns>
         [HttpPost("AddActivity/")]
-        public ActionResult AddActivity([FromBody] ApplicationClasses.AdminCreateActivityInfo activityInfo)
+        [ProducesResponseType(typeof(ActionResult), 200)] // OK
+        [ProducesResponseType(typeof(ActionResult), 403)] // Unauthorized
+        [ProducesResponseType(typeof(ActionResult), 500)] // Server Error
+        public ActionResult AddActivity([FromBody] AdminCreateActivityInfo activityInfo)
         {
             if (!DatabaseRepositories.LoginRepository.GetLoginInformation(activityInfo.LoginUserCredentials.Email, activityInfo.LoginUserCredentials.Password).IsAdmin)
                 return StatusCode(403);
             try
             {
-                //string encodedUrl = "http://open.mapquestapi.com/geocoding/v1/address?key=" + Config.config.MapQuestToken + "&location=" + HttpUtility.UrlEncode(activityInfo.SubmittedLocation.ActivityPlace.Address);
-                //Console.WriteLine(encodedUrl);
-                //HttpClient client = new HttpClient();
-                //client.DefaultRequestHeaders.Add("Accept", "application/json");
-                //HttpResponseMessage response = client.GetAsync(encodedUrl).Result;
-                //response.EnsureSuccessStatusCode();
-                //ApplicationClasses.MapQuestResponse locationData = JsonConvert.DeserializeObject<ApplicationClasses.MapQuestResponse>(response.Content.ReadAsStringAsync().Result);
 
                 DatabaseClasses.Activity activity = new DatabaseClasses.Activity
                 {
@@ -55,8 +61,17 @@ namespace SailingBackend.Controllers
                 return StatusCode(500);
             }
         }
+        /// <summary>
+        /// Delete a review from the application
+        /// </summary>
+        /// <param name="login"> Object of type LoginUserCredentials, containing email and password </param>
+        /// <param name="review"> integer for review ID, entered in query string </param>
+        /// <returns> ActionResult/HTTP status code </returns>
         [HttpDelete("DeleteReview")]
-        public ActionResult DeleteReview([FromBody] ApplicationClasses.LoginUserCredentials login, int review)
+        [ProducesResponseType(typeof(ActionResult), 200)] // OK
+        [ProducesResponseType(typeof(ActionResult), 403)] // Unauthorized
+        [ProducesResponseType(typeof(ActionResult), 500)] // Server Error
+        public ActionResult DeleteReview([FromBody] LoginUserCredentials login, int review)
         {
             if (!DatabaseRepositories.LoginRepository.GetLoginInformation(login.Email, login.Password).IsAdmin)
                 return StatusCode(403);
@@ -72,9 +87,17 @@ namespace SailingBackend.Controllers
             }
             return StatusCode(500);
         }
-
+        /// <summary>
+        /// Delete an activity from the application
+        /// </summary>
+        /// <param name="login"> Object of type LoginUserCredentials, containing email and password </param>
+        /// <param name="activity"> integer for activity ID, entered in query string </param>
+        /// <returns> ActionResult/HTTP status code </returns>
         [HttpDelete("DeleteActivity")]
-        public ActionResult DeleteActivity([FromBody] ApplicationClasses.LoginUserCredentials login, int activity)
+        [ProducesResponseType(typeof(ActionResult), 200)] // OK
+        [ProducesResponseType(typeof(ActionResult), 403)] // Unauthorized
+        [ProducesResponseType(typeof(ActionResult), 500)] // Server Error
+        public ActionResult DeleteActivity([FromBody] LoginUserCredentials login, int activity)
         {
             if (!DatabaseRepositories.LoginRepository.GetLoginInformation(login.Email, login.Password).IsAdmin)
                 return StatusCode(403);

@@ -7,11 +7,18 @@ using System.Threading.Tasks;
 
 namespace SailingBackend.Controllers
 {
+    /// <summary>
+    /// Create API controller and hide from Swagger
+    /// </summary>
     [ApiExplorerSettings(IgnoreApi = true)]
-    [Route("api/[controller]")]
+    [Route("/")]
     [ApiController]
     public class SwaggerController : ControllerBase
     {
+        /// <summary>
+        /// Redirect / to /swagger
+        /// </summary>
+        /// <returns> Permanent Redirect</returns>
         [HttpGet("/")]
         public IActionResult RedirectToDocs()
         {

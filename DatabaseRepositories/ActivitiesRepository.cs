@@ -3,21 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
+using SailingBackend.ApplicationClasses;
 
 namespace SailingBackend.DatabaseRepositories
 {
+	/// <summary>
+	/// Contains database logic relating to Activities
+	/// </summary>
     public static class ActivitiesRepository
     {
-		public static IEnumerable<ApplicationClasses.Activity> GetAllActivities()
+		/// <summary>
+		/// Get all activities from database
+		/// </summary>
+		/// <returns> IEnumerable of type Activity </returns>
+		public static IEnumerable<Activity> GetAllActivities()
 		{
 			using var connection = DatabaseConnectionRepository.Connect();
 			try
 			{
 				IEnumerable<DatabaseClasses.Activity> vStorage = connection.Query<DatabaseClasses.Activity>("SELECT * FROM Activities");
-				List<ApplicationClasses.Activity> activities = new List<ApplicationClasses.Activity>();
+				List<Activity> activities = new List<Activity>();
 				foreach (DatabaseClasses.Activity activity in vStorage)
                 {
-					activities.Add(new ApplicationClasses.Activity 
+					activities.Add(new Activity 
 					{ 
 						ActivityId = activity.ActivityID,
 						ActivityImage = activity.ActivityImage,
@@ -41,7 +49,7 @@ namespace SailingBackend.DatabaseRepositories
 			}
 			catch (NullReferenceException)
 			{
-				return new List<ApplicationClasses.Activity> { };
+				return new List<Activity> { };
 			}
 		}
 	}

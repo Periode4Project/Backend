@@ -13,15 +13,29 @@ using System.Threading.Tasks;
 
 namespace SailingBackend
 {
+    /// <summary>
+    /// Default ASP.Net Startup Class
+    /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// Default startup constructor
+        /// </summary>
+        /// <param name="configuration"> IConfiguration </param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
+        /// <summary>
+        /// ASP Default Configuration
+        /// </summary>
         public IConfiguration Configuration { get; }
 
+        /// <summary>
+        /// ASP Default ConfigureServices
+        /// </summary>
+        /// <param name="services"> IServiceCollection </param>
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -33,6 +47,11 @@ namespace SailingBackend
             });
         }
 
+        /// <summary>
+        /// Default Configure Method
+        /// </summary>
+        /// <param name="app"> IApplicationBuilder </param>
+        /// <param name="env"> IWebHostEnvironment </param>
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

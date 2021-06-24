@@ -8,10 +8,19 @@ using System.Threading.Tasks;
 
 namespace SailingBackend
 {
+    /// <summary>
+    /// Configuration Class
+    /// </summary>
     public static class Config
     {
+        /// <summary>
+        /// Database configuration
+        /// </summary>
         public static ConfigFile Database { get; set; }
 
+        /// <summary>
+        /// Constructor to ensure Config is always populated
+        /// </summary>
         static Config() 
         {
              Database = new ConfigFile()

@@ -7,10 +7,19 @@ using System.Threading.Tasks;
 
 namespace SailingBackend.DatabaseMigrations
 {
+    /// <summary>
+    /// Handle Database Migrations
+    /// </summary>
     public static class DatabaseMigrationsController
     {
+        /// <summary>
+        /// List of database migrations, used in LoadMigrations
+        /// </summary>
         static List<DatabaseMigration> DatabaseMigrations = new List<DatabaseMigration> { };
 
+        /// <summary>
+        /// Constructor to fill mugrations list
+        /// </summary>
         static DatabaseMigrationsController()
         {
             DatabaseMigrations.Add(TrackMigrationsMigration.DatabaseMigration);
@@ -20,6 +29,9 @@ namespace SailingBackend.DatabaseMigrations
             DatabaseMigrations.Add(CreateSuggestionsMigration.DatabaseMigration);
             DatabaseMigrations.Add(AddAdminFlagToUsersMigration.DatabaseMigration);
         }
+        /// <summary>
+        /// Load Migrations 
+        /// </summary>
         public static void LoadMigrations()
         {
             int executedMigrations = 0;
@@ -45,6 +57,11 @@ namespace SailingBackend.DatabaseMigrations
                 }
             Console.WriteLine($"{executedMigrations} Migrations were executed.");
         }
+        /// <summary>
+        /// Checks if migration exists or not
+        /// </summary>
+        /// <param name="migrationName"> Migration name </param>
+        /// <returns> bool exists </returns>
         static bool DoesMigrationExist(string migrationName)
         {
             using IDbConnection connection = DatabaseRepositories.DatabaseConnectionRepository.Connect();
@@ -62,16 +79,37 @@ namespace SailingBackend.DatabaseMigrations
         }
     }
 
+    /// <summary>
+    /// Database Migration
+    /// </summary>
     public class DatabaseMigration
     {
+        /// <summary>
+        /// Migration ID
+        /// </summary>
         public int MigrationId { get; set; }
+        /// <summary>
+        /// Migration Name
+        /// </summary>
         public string MigrationName { get; set; }
+        /// <summary>
+        /// Database Queries
+        /// </summary>
         public List<Query> Queries { get; set; }
     }
 
+    /// <summary>
+    /// Database Query
+    /// </summary>
     public class Query
     {
+        /// <summary>
+        /// SqlQuery
+        /// </summary>
         public string SqlQuery { get; set; }
+        /// <summary>
+        /// Anonymous typed object containing parameters
+        /// </summary>
         public object Params { get; set; }
     }
 }

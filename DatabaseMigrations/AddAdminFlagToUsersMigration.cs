@@ -5,8 +5,14 @@ using System.Threading.Tasks;
 
 namespace SailingBackend.DatabaseMigrations
 {
+    /// <summary>
+    /// Migration Class
+    /// </summary>
     public static class AddAdminFlagToUsersMigration
     {
+        /// <summary>
+        /// Static Migration
+        /// </summary>
         public static DatabaseMigration DatabaseMigration { get; set; } = new DatabaseMigration
         {
             Queries = new List<Query> { }
@@ -17,8 +23,10 @@ namespace SailingBackend.DatabaseMigrations
             DatabaseMigration.MigrationName = "AddAdminFlagToUsers";
             DatabaseMigration.Queries.Add(new Query
             {
-                SqlQuery = @"ALTER TABLE Users
-                             ADD IsAdmin BOOL DEFAULT False",
+                SqlQuery = @"
+                ALTER TABLE Users
+                ADD IsAdmin BOOL DEFAULT False
+                ",
                 Params = new { }
             });
             DatabaseMigration.Queries.Add(new Query
