@@ -6,8 +6,14 @@ using Dapper;
 
 namespace SailingBackend.DatabaseMigrations
 {
+    /// <summary>
+    /// Migration Class
+    /// </summary>
     public static class TrackMigrationsMigration
     {
+        /// <summary>
+        /// Static Migration
+        /// </summary>
         public static DatabaseMigration DatabaseMigration { get; set; } = new DatabaseMigration
         {
             Queries = new List<Query> { }
@@ -17,11 +23,14 @@ namespace SailingBackend.DatabaseMigrations
             DatabaseMigration.MigrationName = "TrackMigrations";
             DatabaseMigration.Queries.Add(new Query 
             { 
-                SqlQuery = @"CREATE TABLE Migrations(
-                MigrationId INTEGER NOT NULL AUTO_INCREMENT,
-                MigrationName VARCHAR(50) NOT NULL,
-                PRIMARY KEY(MigrationId)
-                )", 
+                SqlQuery = @"
+                CREATE TABLE Migrations
+                (
+                    MigrationId INTEGER NOT NULL AUTO_INCREMENT,
+                    MigrationName VARCHAR(50) NOT NULL,
+                    PRIMARY KEY(MigrationId)
+                )
+                ", 
                 Params = new { } 
             });
             DatabaseMigration.Queries.Add(new Query 
